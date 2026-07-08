@@ -1,0 +1,63 @@
+/* ZMIENNE KOLORYSTYCZNE - ARCHITEKTURA (PALETA 2) */
+:root {
+  /* ==========================================
+     PALETA 2: Skandynawska Przestrzeń i Szkło
+     ========================================== */
+  --color-scandi-bg: #FCFBF9;       /* Ciepła kość słoniowa (Tło główne) */
+  --color-scandi-surface: #DCE0E2;  /* Mglista stal (Sekcje) */
+  --color-scandi-accent1: #C4B7A6;  /* Piaskowiec / Taupe (Secondary) */
+  --color-scandi-accent2: #BC8A76;  /* Zgaszona terakota (Primary / Przyciski) */
+
+  /* Globalny kolor tekstu */
+  --color-text-main: #1A1A1A;       
+}
+
+/* 
+   Wymuszenie nadpisania domyślnego motywu Bootstrapa na nową paletę
+*/
+:root, [data-bs-theme="light"] {
+  --bs-body-bg: var(--color-scandi-bg) !important;       
+  --bs-body-color: var(--color-text-main) !important;   
+  
+  --bs-primary: var(--color-scandi-accent2) !important;  
+  --bs-secondary: var(--color-scandi-accent1) !important;
+  --bs-light: var(--color-scandi-surface) !important;    
+  --bs-dark: var(--color-text-main) !important;         
+}
+
+/* 
+   Absolutne wymuszenie kolorów bazowych na ciele dokumentu
+*/
+body {
+  background-color: var(--bs-body-bg) !important;
+  color: var(--bs-body-color) !important;
+}
+
+/* 
+   Nadpisanie klas pomocniczych teł i tekstów
+*/
+.bg-primary { background-color: var(--bs-primary) !important; }
+.bg-secondary { background-color: var(--bs-secondary) !important; }
+.text-primary { color: var(--bs-primary) !important; }
+
+/* 
+   Wymuszenie nowych kolorów dla przycisków Bootstrapa 
+*/
+.btn-primary {
+  --bs-btn-bg: var(--color-scandi-accent2);
+  --bs-btn-border-color: var(--color-scandi-accent2);
+  --bs-btn-hover-bg: var(--color-scandi-accent1);
+  --bs-btn-hover-border-color: var(--color-scandi-accent1);
+  --bs-btn-active-bg: var(--color-scandi-accent1);
+  --bs-btn-active-border-color: var(--color-scandi-accent1);
+  --bs-btn-color: #fff; /* Biały tekst na terakocie */
+}
+
+.btn-secondary {
+  --bs-btn-bg: var(--color-scandi-accent1);
+  --bs-btn-border-color: var(--color-scandi-accent1);
+  --bs-btn-hover-bg: var(--color-scandi-surface);
+  --bs-btn-hover-border-color: var(--color-scandi-surface);
+  --bs-btn-active-bg: var(--color-scandi-surface);
+  --bs-btn-color: var(--color-text-main); /* Ciemny tekst na jasnym piaskowcu */
+}
