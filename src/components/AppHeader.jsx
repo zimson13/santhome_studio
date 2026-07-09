@@ -1,4 +1,4 @@
-import { Navbar, Container, Nav, Image } from 'react-bootstrap';
+import { Navbar, Container, Nav, NavDropdown, Image } from 'react-bootstrap';
 import logoImage from './images/LOGO.png';
 
 function AppHeader() {
@@ -15,7 +15,19 @@ function AppHeader() {
           <Nav className="ms-auto fw-medium gap-3 align-items-center">
             <Nav.Link href="#home">Strona główna</Nav.Link>
             <Nav.Link href="#team">Zespół</Nav.Link>
-            <Nav.Link href="#portfolio">Projekty</Nav.Link>
+            <NavDropdown title="Projekty" id="projects-dropdown">
+              <NavDropdown.Item href="#portfolio">Wnętrze</NavDropdown.Item>
+              <NavDropdown.Divider />
+              <NavDropdown.Item href="#portfolio">Meble</NavDropdown.Item>
+              <NavDropdown.Divider />
+              <NavDropdown.Item href="#portfolio">Sztuka</NavDropdown.Item>
+              <NavDropdown.Divider />
+              <NavDropdown.Item href="#portfolio">Warsztaty</NavDropdown.Item>
+              <NavDropdown.Divider />
+              <NavDropdown.Item href="#portfolio">Biżuteria</NavDropdown.Item>
+              <NavDropdown.Divider />
+              <NavDropdown.Item href="#portfolio">Rzemiosło</NavDropdown.Item>
+            </NavDropdown>
             <Nav.Link href="#testimonials">Opinie</Nav.Link>
             <Nav.Link href="#contact" className="ms-lg-3">
               <button className="btn btn-primary px-4 rounded-pill">
