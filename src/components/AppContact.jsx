@@ -48,11 +48,11 @@ function Contact() {
               <h4 className="fw-bold mb-4">Wyślij wiadomość</h4>
               
               {/* WAŻNE: W atrybucie action wpisz adres email, na który mają przychodzić wiadomości */}
-              <Form action="https://formsubmit.co/TUTAJ_WPISZ_SWOJ_EMAIL@domena.pl" method="POST">
+              <Form action="https://formsubmit.co/matiq2006.zapasowe@gmail.com" method="POST">
                 
                 {/* Konfiguracja FormSubmit (ukryte pola) */}
                 <input type="hidden" name="_subject" value="Nowa wiadomość ze strony Santhome Studio!" />
-                <input type="hidden" name="_captcha" value="false" />
+                <input type="hidden" name="_captcha" value="true" />
                 {/* Powrót na Twoją stronę po wysłaniu: */}
                 <input type="hidden" name="_next" value="https://zimson13.github.io/santhome_studio/" />
 
