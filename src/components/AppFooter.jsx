@@ -1,9 +1,25 @@
 import React from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
+import { useLocation, useNavigate, Link } from 'react-router-dom';
 
 function Footer() {
   const currentYear = new Date().getFullYear();
 
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  const scrollToSection = (sectionId) => {
+    if (location.pathname !== '/') {
+      navigate('/');
+      setTimeout(() => {
+        document.getElementById(sectionId)?.scrollIntoView({ behavior: 'smooth' });
+      }, 100);
+    } else {
+      document.getElementById(sectionId)?.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
+  
   return (
     <footer className="bg-dark text-white py-5">
       <Container className="py-4">
@@ -21,20 +37,20 @@ function Footer() {
           </Col>
 
           
-          <Col md={6} lg={4}>
-            <h6 className="text-uppercase mb-4 fw-bold">Na skróty</h6>
-            <ul className="list-unstyled mb-0 d-flex flex-column gap-3 small">
-              <li>
-                <a href="#home" className="text-white-50 text-decoration-none">Strona główna</a>
+          <Col lg={4} md={6}>
+            <h5 className="fw-bold mb-3">Szybkie linki</h5>
+            <ul className="list-unstyled">
+              <li className="mb-2">
+                <span className="text-secondary text-decoration-none text-hover-white" style={{ cursor: 'pointer', transition: '0.3s' }} onClick={() => scrollToSection('portfolio')}>Projekty</span>
               </li>
-              <li>
-                <a href="#portfolio" className="text-white-50 text-decoration-none">Wybrane Realizacje</a>
+              <li className="mb-2">
+                <span className="text-secondary text-decoration-none text-hover-white" style={{ cursor: 'pointer', transition: '0.3s' }} onClick={() => scrollToSection('team')}>Zespół</span>
               </li>
-              <li>
-                <a href="#team" className="text-white-50 text-decoration-none">Nasz Zespół</a>
+              <li className="mb-2">
+                <span className="text-secondary text-decoration-none text-hover-white" style={{ cursor: 'pointer', transition: '0.3s' }} onClick={() => scrollToSection('testimonials')}>Opinie</span>
               </li>
-              <li>
-                <a href="#contact" className="text-white-50 text-decoration-none">Kontakt</a>
+              <li className="mb-2">
+                <span className="text-secondary text-decoration-none text-hover-white" style={{ cursor: 'pointer', transition: '0.3s' }} onClick={() => scrollToSection('contact')}>Kontakt</span>
               </li>
             </ul>
           </Col>

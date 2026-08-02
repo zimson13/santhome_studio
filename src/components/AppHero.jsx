@@ -1,4 +1,5 @@
 import React from 'react';
+import { useLocation, useNavigate, Link } from 'react-router-dom';
 import { Carousel, Button } from 'react-bootstrap';
 
 function Hero() {
@@ -8,6 +9,20 @@ function Hero() {
     objectFit: 'cover',
     width: '100%',
     filter: 'brightness(70%)'
+  };
+
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  const scrollToSection = (sectionId) => {
+    if (location.pathname !== '/') {
+      navigate('/');
+      setTimeout(() => {
+        document.getElementById(sectionId)?.scrollIntoView({ behavior: 'smooth' });
+      }, 100);
+    } else {
+      document.getElementById(sectionId)?.scrollIntoView({ behavior: 'smooth' });
+    }
   };
 
   return (
@@ -26,7 +41,7 @@ function Hero() {
           <p className="lead text-white-50 mb-4 fs-4">
             Tworzymy architekturę w harmonii z naturą. Odkryj nasze najnowsze projekty domów jednorodzinnych.
           </p>
-          <Button variant="primary" size="lg" className="px-5 py-3 rounded-0">
+          <Button variant="primary" size="lg" className="px-5 py-3 rounded-0" onClick={() => scrollToSection('portfolio')}>
             Zobacz portfolio
           </Button>
         </Carousel.Caption>
@@ -45,7 +60,7 @@ function Hero() {
           <p className="lead text-white-50 mb-4 fs-4">
             Skandynawski minimalizm spotyka się z funkcjonalnością. Zobacz, jak projektujemy przestrzenie do życia.
           </p>
-          <Button variant="light" size="lg" className="px-5 py-3 rounded-0">
+          <Button variant="light" size="lg" className="px-5 py-3 rounded-0" onClick={() => scrollToSection('team')}>
             Poznaj nasz zespół
           </Button>
         </Carousel.Caption>
