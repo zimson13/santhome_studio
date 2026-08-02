@@ -53,6 +53,7 @@ function Contact() {
                 {/* Konfiguracja FormSubmit (ukryte pola) */}
                 <input type="hidden" name="_subject" value="Nowa wiadomość ze strony Santhome Studio!" />
                 <input type="hidden" name="_captcha" value="true" />
+                <input type="text" name="_honey" style={{ display: 'none' }} />
                 {/* Powrót na Twoją stronę po wysłaniu: */}
                 <input type="hidden" name="_next" value="https://zimson13.github.io/santhome_studio/" />
 
