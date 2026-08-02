@@ -1,35 +1,33 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { Container, Row, Col, Card, Tabs, Tab, Pagination } from 'react-bootstrap';
+// Importujemy naszego klienta Sanity
+import { client, urlFor } from '../sanity'; 
 
-function Projects() {
+function AppProjects() {
   const categories = ['Wnętrze', 'Meble', 'Sztuka', 'Warsztaty', 'Biżuteria', 'Rzemiosło'];
 
-  // Generator fikcyjnych danych na potrzeby demonstracji paginacji
-  // W prawdziwym życiu te dane będą pochodzić z bazy lub zewnętrznego pliku
-  const allProjects = [
-    ...Array.from({ length: 12 }, (_, i) => ({
-      id: `w-${i}`,
-      title: `Projekt Wnętrza ${i + 1}`,
-      category: 'Wnętrze',
-      imgUrl: `https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?q=80&w=600&auto=format&fit=crop&sig=${i}`,
-      description: 'Nowoczesna przestrzeń zaprojektowana z dbałością o detale.'
-    })),
-    { id: 'm-1', title: 'Stół Dębowy', category: 'Meble', imgUrl: 'https://images.unsplash.com/photo-1592078615290-033ee584e267?q=80&w=600&auto=format&fit=crop', description: 'Ręcznie robiony stół z litego dębu.' },
-    { id: 's-1', title: 'Rzeźba z Brązu', category: 'Sztuka', imgUrl: 'https://images.unsplash.com/photo-1513519245088-0e12902e5a38?q=80&w=600&auto=format&fit=crop', description: 'Abstrakcyjna forma przestrzenna.' },
-  ];
-
-  // Stany (State) komponentu
+  // Zmieniamy stan allProjects na pustą tablicę z początku
+  const [allProjects, setAllProjects] = useState([]);
   const [activeTab, setActiveTab] = useState('Wnętrze');
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 9; // Siatka 3x3
+  const itemsPerPage = 9; 
 
-  // Funkcja resetująca stronę przy zmianie zakładki
+  // POBIERANIE DANYCH Z SANITY
+  useEffect(() => {
+    // Zapytanie GROQ (język Sanity) - pobierz wszystkie dokumenty typu "project"
+    client.fetch(`*[_type == "project"]`)
+      .then((data) => {
+        setAllProjects(data); // Zapisujemy pobrane dane do stanu
+      })
+      .catch(console.error);
+  }, []); // Pusta tablica = wywołaj tylko raz po załadowaniu strony
+
   const handleTabSelect = (k) => {
     setActiveTab(k);
     setCurrentPage(1);
   };
 
-  // Logika filtrowania i paginacji
   const filteredProjects = allProjects.filter(p => p.category === activeTab);
   const totalPages = Math.ceil(filteredProjects.length / itemsPerPage);
   
@@ -46,7 +44,6 @@ function Projects() {
           <p className="text-muted fs-5">Wybierz kategorię, aby zobaczyć realizacje.</p>
         </div>
 
-        {/* Zakładki (Tabs) */}
         <Tabs
           activeKey={activeTab}
           onSelect={handleTabSelect}
@@ -55,18 +52,22 @@ function Projects() {
           {categories.map(category => (
             <Tab eventKey={category} title={category} key={category}>
               
-              {/* Siatka 3x3 */}
               <Row xs={1} md={2} lg={3} className="g-4 mb-4">
                 {currentProjects.length > 0 ? (
                   currentProjects.map((project) => (
-                    <Col key={project.id}>
+                    // Jako klucz używamy Sanity ID (_id)
+                    <Col key={project._id}>
+                      <Link to={`/project/${project._id}`} className="text-decoration-none text-dark">
                       <Card className="h-100 border-0 shadow-sm bg-body">
-                        <Card.Img 
-                          variant="top" 
-                          src={project.imgUrl} 
-                          alt={project.title}
-                          style={{ height: '250px', objectFit: 'cover' }}
-                        />
+                        {/* Jeśli projekt ma zdjęcie, renderujemy je przez funkcję urlFor */}
+                        {project.mainImage && (
+                          <Card.Img 
+                            variant="top" 
+                            src={urlFor(project.mainImage).width(600).url()} 
+                            alt={project.title}
+                            style={{ height: '250px', objectFit: 'cover' }}
+                          />
+                        )}
                         <Card.Body className="p-4">
                           <Card.Title className="fw-bold">{project.title}</Card.Title>
                           <Card.Text className="text-muted small">
@@ -74,6 +75,7 @@ function Projects() {
                           </Card.Text>
                         </Card.Body>
                       </Card>
+                      </Link>
                     </Col>
                   ))
                 ) : (
@@ -83,36 +85,23 @@ function Projects() {
                 )}
               </Row>
 
-              {/* Paginacja Bootstrap */}
               {totalPages > 1 && (
                 <Pagination className="justify-content-center mt-5">
-                  <Pagination.Prev 
-                    onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))} 
-                    disabled={currentPage === 1} 
-                  />
+                  <Pagination.Prev onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))} disabled={currentPage === 1} />
                   {[...Array(totalPages)].map((_, idx) => (
-                    <Pagination.Item 
-                      key={idx + 1} 
-                      active={idx + 1 === currentPage}
-                      onClick={() => setCurrentPage(idx + 1)}
-                    >
+                    <Pagination.Item key={idx + 1} active={idx + 1 === currentPage} onClick={() => setCurrentPage(idx + 1)}>
                       {idx + 1}
                     </Pagination.Item>
                   ))}
-                  <Pagination.Next 
-                    onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))} 
-                    disabled={currentPage === totalPages} 
-                  />
+                  <Pagination.Next onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))} disabled={currentPage === totalPages} />
                 </Pagination>
               )}
-
             </Tab>
           ))}
         </Tabs>
-        
       </Container>
     </section>
   );
 }
 
-export default Projects;
+export default AppProjects;
