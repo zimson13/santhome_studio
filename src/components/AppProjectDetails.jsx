@@ -2,28 +2,40 @@ import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { Container, Row, Col, Button, Image } from 'react-bootstrap';
 import { client, urlFor } from '../sanity';
+import AppNotFound from './AppNotFound';
 
 function AppProjectDetails() {
   // Pobieramy ID projektu z paska adresu URL
   const { id } = useParams();
   const [project, setProject] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Odpytujemy Sanity o projekt, którego _id zgadza się z naszym z URL
-    window.scrollTo(0, 0); // Zawsze przewijaj na górę po wejściu na podstronę
+    window.scrollTo(0, 0);
+    setLoading(true);
+    setProject(null);
     client.fetch(`*[_type == "project" && _id == $id][0]`, { id })
-      .then((data) => setProject(data))
-      .catch(console.error);
+      .then((data) => {
+        setProject(data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error(err);
+        setLoading(false);
+      });
   }, [id]);
 
   // Ekran ładowania, dopóki dane nie przyjdą z Sanity
-  if (!project) {
-    return (
-      <Container className="py-5 text-center my-5">
-        <h4 className="text-muted">Ładowanie projektu...</h4>
-      </Container>
-    );
-  }
+  if (loading) {
+  return (
+    <Container className="py-5 text-center my-5">
+      <h4 className="text-muted">Ładowanie projektu...</h4>
+    </Container>
+  );
+}
+if (!project) {
+  return <AppNotFound />;
+}
 
   return (
     <section className="py-5 my-5">
@@ -61,8 +73,6 @@ function AppProjectDetails() {
               {project.description}
             </p>
             
-            {/* Tutaj w przyszłości możesz dodać więcej pól z Sanity, 
-                np. rok realizacji, materiały, cena itp. */}
           </Col>
 
         </Row>

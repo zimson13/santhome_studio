@@ -8,6 +8,7 @@ import AppTestimonials from './components/AppTestimonials';
 import AppContact from './components/AppContact';
 import AppFooter from './components/AppFooter';
 import AppProjectDetails from './components/AppProjectDetails'; // Import nowej podstrony
+import AppNotFound from './components/AppNotFound'; // Import komponentu 404
 
 // Wydzielamy stronę główną (Landing Page) do osobnego komponentu wewnątrz
 function HomePage() {
@@ -36,6 +37,7 @@ function App() {
         {/* Ścieżka podstrony - ładuje tylko szczegóły projektu. 
             Zmienna :id wyłapie unikalny kod projektu z Sanity */}
         <Route path="/project/:id" element={<AppProjectDetails />} />
+        <Route path="*" element={<AppNotFound />} />
       </Routes>
 
       <AppFooter />
