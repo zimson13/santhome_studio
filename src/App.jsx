@@ -26,7 +26,7 @@ function HomePage() {
 function App() {
   return (
     // HashRouter jest wymagany, aby routing działał poprawnie na GitHub Pages
-    <BrowserRouter basename="/santhomestudio/">
+    <BrowserRouter>
       {/* Header i Footer są poza Routes - będą widoczne na każdej podstronie */}
       <AppHeader />
       
